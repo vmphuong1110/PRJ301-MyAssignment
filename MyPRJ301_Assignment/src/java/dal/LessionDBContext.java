@@ -22,8 +22,8 @@ import java.util.logging.Logger;
  * @author PHUONG
  */
 public class LessionDBContext extends DBContext<Lession> {
-    
- public void takeAttendances(int leid, ArrayList<Attendance> atts) {
+
+    public void takeAttendances(int leid, ArrayList<Attendance> atts) {
         try {
             connection.setAutoCommit(false);
             String sql_remove_atts = "DELETE Attendence WHERE leid = ?";
@@ -79,19 +79,20 @@ public class LessionDBContext extends DBContext<Lession> {
         ArrayList<Student> students = new ArrayList<>();
         try {
             String sql = "SELECT \n"
-                    + "s.sid,s.sname\n"
+                    + "s.sid,s.sname,s.scode,s.simage\n"
                     + "FROM Student s INNER JOIN Enrollment e ON s.sid = e.sid\n"
-                    + "						INNER JOIN StudentGroup g ON g.gid = e.gid\n"
-                    + "						INNER JOIN Lession les ON les.gid = g.gid\n"
+                    + "					INNER JOIN StudentGroup g ON g.gid = e.gid\n"
+                    + "				INNER JOIN Lession les ON les.gid = g.gid\n"
                     + "WHERE les.leid = ?";
             PreparedStatement stm = connection.prepareStatement(sql);
             stm.setInt(1, leid);
             ResultSet rs = stm.executeQuery();
-            while(rs.next())
-            {
+            while (rs.next()) {
                 Student s = new Student();
                 s.setId(rs.getInt("sid"));
                 s.setName(rs.getString("sname"));
+                s.setCode(rs.getString("scode"));
+                s.setImage(rs.getString("simage"));
                 students.add(s);
             }
         } catch (SQLException ex) {
@@ -103,14 +104,12 @@ public class LessionDBContext extends DBContext<Lession> {
     public ArrayList<Attendance> getAttendencesByLession(int leid) {
         ArrayList<Attendance> atts = new ArrayList<>();
         try {
-            String sql = "SELECT \n"
-                    + "s.sid,s.sname,\n"
-                    + "a.aid,a.description,a.isPresent,a.capturedtime\n"
+            String sql = "SELECT s.sid,s.sname,s.scode,s.simage, a.aid,a.description,a.isPresent,a.capturedtime\n"
                     + "FROM Student s INNER JOIN Enrollment e ON s.sid = e.sid\n"
-                    + "						INNER JOIN StudentGroup g ON g.gid = e.gid\n"
-                    + "						INNER JOIN Lession les ON les.gid = g.gid\n"
-                    + "						LEFT JOIN Attendence a ON a.leid = les.leid AND a.sid = s.sid\n"
-                    + "WHERE les.leid = ?";
+                    + "INNER JOIN StudentGroup g ON g.gid = e.gid\n"
+                    + "INNER JOIN Lession les ON les.gid = g.gid\n"
+                    + "LEFT JOIN Attendence a ON a.leid = les.leid AND a.sid = s.sid\n"
+                    + " WHERE les.leid = ?";
             PreparedStatement stm = connection.prepareStatement(sql);
             stm.setInt(1, leid);
             ResultSet rs = stm.executeQuery();
@@ -120,6 +119,8 @@ public class LessionDBContext extends DBContext<Lession> {
                 Lession les = new Lession();
                 s.setId(rs.getInt("sid"));
                 s.setName(rs.getString("sname"));
+                s.setCode(rs.getString("scode"));
+                s.setImage(rs.getString("simage"));
                 a.setStudent(s);
 
                 les.setId(leid);
@@ -140,7 +141,6 @@ public class LessionDBContext extends DBContext<Lession> {
         return atts;
     }
 
-    
     //Lay date cua schedule
     public ArrayList<Lession> getBy(int lid, Date from, Date to) {
         ArrayList<Lession> lessions = new ArrayList<>();
@@ -162,46 +162,45 @@ public class LessionDBContext extends DBContext<Lession> {
             stm.setDate(2, from);
             stm.setDate(3, to);
             ResultSet rs = stm.executeQuery();
-            while(rs.next())
-            {
+            while (rs.next()) {
                 Lession les = new Lession();
                 StudentGroup g = new StudentGroup();
                 Subject s = new Subject();
                 TimeSlot slot = new TimeSlot();
                 Room r = new Room();
                 Lecturer l = new Lecturer();
-                
+
                 les.setId(rs.getInt("leid"));
                 les.setIsAttended(rs.getBoolean("isAttended"));
                 les.setDate(rs.getDate("date"));
-                
+
                 g.setId(rs.getInt("gid"));
                 g.setName(rs.getString("gname"));
                 s.setId(rs.getInt("subid"));
                 s.setName(rs.getString("suname"));
                 g.setSubject(s);
                 les.setGroup(g);
-                
+
                 slot.setId(rs.getInt("tid"));
                 slot.setName(rs.getString("tname"));
                 les.setSlot(slot);
-                
+
                 r.setId(rs.getInt("rid"));
                 r.setName(rs.getString("rname"));
-                les.setRoom(r); 
-                
+                les.setRoom(r);
+
                 l.setId(rs.getInt("lid"));
                 l.setName(rs.getString("lname"));
-                les.setLecturer(l); 
-                
+                les.setLecturer(l);
+
                 lessions.add(les);
             }
         } catch (SQLException ex) {
             Logger.getLogger(LessionDBContext.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
+
         return lessions;
-        
+
     }
 
     @Override
