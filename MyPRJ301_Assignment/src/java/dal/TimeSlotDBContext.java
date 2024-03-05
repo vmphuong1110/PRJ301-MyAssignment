@@ -23,13 +23,14 @@ public class TimeSlotDBContext extends DBContext<TimeSlot> {
         ArrayList<TimeSlot> slots = new ArrayList<>();
         try {
 
-            String sql = "SELECT tid,tname FROM TimeSlot";
+            String sql = "select tid, tname, ttime from TimeSlot";
             PreparedStatement stm = connection.prepareStatement(sql);
             ResultSet rs = stm.executeQuery();
             while (rs.next()) {
                 TimeSlot t = new TimeSlot();
                 t.setId(rs.getInt("tid"));
                 t.setName(rs.getString("tname"));
+                t.setTime(rs.getString("ttime"));
                 slots.add(t);
             }
         } catch (SQLException ex) {

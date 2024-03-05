@@ -146,17 +146,18 @@ public class LessionDBContext extends DBContext<Lession> {
         ArrayList<Lession> lessions = new ArrayList<>();
         try {
             String sql = "SELECT \n"
-                    + "les.leid,les.isAttended,les.date,\n"
-                    + "g.gid,g.gname,su.subid,su.suname,\n"
-                    + "t.tid,t.tname,\n"
-                    + "r.rid,r.rname,\n"
-                    + "l.lid,l.lname\n"
-                    + "FROM Lession les INNER JOIN StudentGroup g ON les.gid = g.gid\n"
-                    + "				INNER JOIN Subject su ON su.subid = g.subid\n"
-                    + "				INNER JOIN TimeSlot t ON t.tid = les.tid\n"
-                    + "				INNER JOIN Room r ON r.rid = les.rid\n"
-                    + "				INNER JOIN Lecturer l ON l.lid = les.lid\n"
-                    + "WHERE les.lid = ? AND les.[date] >= ? and les.[date]<=?";
+                    + "     les.leid,les.isAttended,les.date,\n"
+                    + "     g.gid,g.gname,su.subid,su.suname,\n"
+                    + "     t.tid,t.tname, t.ttime,\n"
+                    + "     r.rid,r.rname,\n"
+                    + "     l.lid,l.lname\n"
+                    + "     FROM Lession les INNER JOIN StudentGroup g ON les.gid = g.gid\n"
+                    + "     INNER JOIN Subject su ON su.subid = g.subid\n"
+                    + "     INNER JOIN TimeSlot t ON t.tid = les.tid\n"
+                    + "     INNER JOIN Room r ON r.rid = les.rid\n"
+                    + "     INNER JOIN Lecturer l ON l.lid = les.lid\n"
+                    + "     WHERE les.lid = ?\n"
+                    + "     AND les.[date] >= ? and les.[date]<=?";
             PreparedStatement stm = connection.prepareStatement(sql);
             stm.setInt(1, lid);
             stm.setDate(2, from);
@@ -183,6 +184,7 @@ public class LessionDBContext extends DBContext<Lession> {
 
                 slot.setId(rs.getInt("tid"));
                 slot.setName(rs.getString("tname"));
+                slot.setTime(rs.getString("ttime"));
                 les.setSlot(slot);
 
                 r.setId(rs.getInt("rid"));
