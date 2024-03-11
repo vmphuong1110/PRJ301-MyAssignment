@@ -12,7 +12,7 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Timetable Schedule</title>
         <style>
-            
+
             table {
                 width: 100%;
                 border-collapse: collapse;
@@ -82,15 +82,23 @@
                             <c:forEach items="${requestScope.lessions}" var="les">
                                 <c:if test="${les.date eq d and les.slot.id eq slot.id}">
                                     ${les.group.name} at ${les.room.name}
-                                    <a href="att?id=${les.id}">Take</a><br/> 
-                                    <c:if test="${les.isAttended}">
-                                        <span class="attended">(Attended)</span>
-                                    </c:if>
-                                    <c:if test="${!les.isAttended}">
-                                        <span class="not-attended">(Not yet)</span>
-                                    </c:if>
-                                    <br/> 
-                                    <p class="time">(${slot.time})</p>
+                                    <a href="att?id=${les.id}">
+                                        <c:if test="${les.isAttended}">
+                                            Edit
+                                        </c:if>
+                                        <c:if test="${!les.isAttended}">
+                                            Take
+                                        </c:if>
+                                    </a><br/> 
+                                    <c:choose>
+                                        <c:when test="${les.isAttended}">
+                                            <span class="attended">(Attended)</span>
+                                        </c:when>
+                                        <c:otherwise>
+                                            <span class="not-attended">(Not yet)</span><br/> 
+                                            <p class="time">(${slot.time})</p>
+                                        </c:otherwise>
+                                    </c:choose>
                                 </c:if>
                             </c:forEach>
                         </td>
