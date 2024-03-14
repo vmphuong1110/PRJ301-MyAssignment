@@ -82,7 +82,6 @@
     <c:if test="${not empty mess}">
         <p>${mess}</p>
     </c:if>
-
     <p><a href="login">Go back</a></p>
 </body>
 </html>

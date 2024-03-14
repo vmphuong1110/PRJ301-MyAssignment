@@ -90,7 +90,7 @@
         <input type="checkbox" name="remember" value="remember">Remember me!
         <div class="forgot-password">
             <p>Did you forget your password?</p>
-            <a href="change.jsp"> CHANGE YOUR PASSWORD</a>
+            <a href="change"> CHANGE YOUR PASSWORD</a>
         </div>
         <br/>
         <input type="submit" value="Login">

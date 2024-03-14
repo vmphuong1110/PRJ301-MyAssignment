@@ -57,7 +57,7 @@ public class ChangeController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        request.getRequestDispatcher("change.jsp").forward(request, response);
+        request.getRequestDispatcher("view/authentication/change.jsp").forward(request, response);
 
     }
 
@@ -78,11 +78,11 @@ public class ChangeController extends HttpServlet {
 
         if (!password.equals(rpassword)) {
             request.setAttribute("mess", "Password do not match, please try again");
-            request.getRequestDispatcher("change.jsp").forward(request, response);
+            request.getRequestDispatcher("view/authentication/change.jsp").forward(request, response);
             return;
         }
         AccountDBContext db = new AccountDBContext();
-        Account account = db.getByUsernamePassword(username, password);
+        Account account = db.getByUsername(username);
         if (account != null) {
             // User exists, update password
             account.setPassword(password);
@@ -96,7 +96,7 @@ public class ChangeController extends HttpServlet {
         }
 
         // Forward the request to the change.jsp page
-        request.getRequestDispatcher("change.jsp").forward(request, response);
+        request.getRequestDispatcher("view/authentication/change.jsp").forward(request, response);
     }
 
     /**
