@@ -18,7 +18,7 @@ import java.util.logging.Logger;
  */
 public class AccountDBContext extends DBContext<Account> {
 
-       public Account getByUsernamePassword(String username, String password) {
+    public Account getByUsernamePassword(String username, String password) {
         try {
             String sql = "SELECT username,password,displayname FROM Account\n"
                     + "WHERE username = ? AND password = ?";
@@ -26,8 +26,7 @@ public class AccountDBContext extends DBContext<Account> {
             stm.setString(1, username);
             stm.setString(2, password);
             ResultSet rs = stm.executeQuery();
-            if(rs.next())
-            {
+            if (rs.next()) {
                 Account account = new Account();
                 account.setUsername(username);
                 account.setDisplayname(rs.getString("displayname"));
@@ -37,6 +36,25 @@ public class AccountDBContext extends DBContext<Account> {
             Logger.getLogger(AccountDBContext.class.getName()).log(Level.SEVERE, null, ex);
         }
         return null;
+    }
+
+    public Account getByUsername(String username) {
+        Account account = null;
+        String sql = "select * from Account where username = ?";
+        try {
+            PreparedStatement stm = connection.prepareStatement(sql);
+            stm.setString(1, username);
+            ResultSet rs = stm.executeQuery();
+            if (rs.next()) {
+                account = new Account();
+                account.setUsername(rs.getString("username"));
+                account.setPassword(rs.getString("password"));
+
+            }
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+        return account;
     }
 
     @Override
