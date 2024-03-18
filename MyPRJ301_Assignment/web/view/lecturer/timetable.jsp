@@ -12,10 +12,11 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Timetable Schedule</title>
         <style>
-
             table {
-                width: 100%;
+                width: 95%;
+                margin: auto; /* Center the table */
                 border-collapse: collapse;
+                font-size: 12px; /* Make font size smaller */
             }
 
             th, td {
@@ -34,6 +35,7 @@
                 font-weight: normal;
                 text-transform: uppercase;
             }
+
             .attended {
                 color: green;
             }
@@ -51,16 +53,67 @@
                 margin: 0px;
                 font-size: 12px;
             }
+            .form-container {
+                margin: 20px;
+                padding: 20px;
+                border: 1px solid #ccc;
+                border-radius: 5px;
+                background-color: #f9f9f9;
+                display: inline-block;
+                margin-left: 40px;
+            }
+
+            /* Style the form */
+            form {
+                display: flex;
+                align-items: center;
+            }
+
+            /* Style the labels */
+            label {
+                margin-right: 10px;
+            }
+
+            /* Style the input fields */
+            input[type="date"] {
+                padding: 8px;
+                border: 1px solid #ccc;
+                border-radius: 5px;
+                width: 150px;
+                box-sizing: border-box; /* Ensure that padding and border are included in the width */
+            }
+
+            /* Style the submit button */
+            input[type="submit"] {
+                padding: 8px 20px;
+                border: none;
+                border-radius: 5px;
+                background-color: #4CAF50;
+                color: #fff;
+                cursor: pointer;
+                margin-left: 10px;
+            }
+
+            /* Style the submit button on hover */
+            input[type="submit"]:hover {
+                background-color: #4CAF50;
+
+            }
         </style>
     </head>
     <body>
 
-        <form action="timetable" method="GET">
-            <input type="hidden" value="${param.id}" name="id"/>
-            From: <input type="date" name="from" value="${requestScope.from}"/> -
-            <input type="date" name="to" value="${requestScope.to}"/>
-            <input type="submit" value="View"/>
-        </form>
+        <div class="form-container">
+            <form action="timetable" method="GET">
+                <input type="hidden" value="${param.id}" name="id"/>
+                <label for="from">From:</label>
+                <input type="date" name="from" value="${requestScope.from}"/>
+                <label for="to">&nbsp;&nbsp;-</label>
+                <input type="date" name="to" value="${requestScope.to}"/>
+                <input type="submit" value="View"/>
+            </form>
+        </div>
+
         <table border="1px">
             <tr>
                 <th></th>

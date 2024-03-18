@@ -37,26 +37,6 @@ public class AccountDBContext extends DBContext<Account> {
         }
         return null;
     }
-
-    public Account getByUsername(String username) {
-        Account account = null;
-        String sql = "select * from Account where username = ?";
-        try {
-            PreparedStatement stm = connection.prepareStatement(sql);
-            stm.setString(1, username);
-            ResultSet rs = stm.executeQuery();
-            if (rs.next()) {
-                account = new Account();
-                account.setUsername(rs.getString("username"));
-                account.setPassword(rs.getString("password"));
-
-            }
-        } catch (SQLException e) {
-            System.out.println(e);
-        }
-        return account;
-    }
-
     @Override
     public ArrayList<Account> list() {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
@@ -68,15 +48,14 @@ public class AccountDBContext extends DBContext<Account> {
     }
 
     @Override
-    public void update(Account account) {
-        String sql = "UPDATE [dbo].[Account]\n"
-                + "   SET \n"
-                + "      [password] = ?\n"
-                + " WHERE username =?";
+    public void update(Account entity) {
+        String sql = "Update Account set password = ? \n"
+                + "where username = ?";
         try {
             PreparedStatement stm = connection.prepareStatement(sql);
-            stm.setString(1, account.getPassword());
-            stm.setString(2, account.getUsername());
+            stm.setString(1, entity.getPassword());
+            stm.setString(2, entity.getUsername());
+            stm.executeUpdate();
         } catch (SQLException e) {
             System.out.println(e);
         }

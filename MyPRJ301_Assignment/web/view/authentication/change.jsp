@@ -4,6 +4,7 @@
     Author     : PHUONG
 --%>
 
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="en">
@@ -27,7 +28,7 @@
                 background-color: #fff;
                 padding: 30px;
                 border-radius: 8px;
-                box-shadow: rgba(3, 102, 214, 0.3) 0px 0px 0px 3px;
+                box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 3px, rgba(0, 0, 0, 0.24) 0px 1px 2px;
             }
             h2 {
                 text-align: center;
@@ -39,6 +40,8 @@
                 display: block;
                 margin-bottom: 8px;
                 font-size: 18px;
+                margin-left: 10px;
+
             }
             input[type="text"],
             input[type="password"],
@@ -46,6 +49,7 @@
             input[type="checkbox"] {
                 width: calc(100% - 22px);
                 padding: 16px;
+                margin-left: 10px;
                 margin-bottom: 20px;
                 border: 1px solid #ccc;
                 border-radius: 8px;
@@ -53,7 +57,7 @@
                 font-size: 18px;
             }
             input[type="submit"] {
-                background-color: royalblue;
+                background-color: #45a049;
                 color: white;
                 border: none;
                 cursor: pointer;
@@ -65,23 +69,44 @@
                 width: auto;
                 margin-top: 8px;
             }
+            .error-message {
+                color: red;
+                text-align: center;
+                text-transform: uppercase;
+                
+            }
+            a.button {
+                display: inline-block;
+                padding: 10px 20px;
+                background-color: #6b90da;
+                color: white;
+                text-decoration: none;
+                border-radius: 5px;
+                transition: background-color 0.3s;
+                margin-left: 10px;
+            }
 
+            /* Hover effect */
+            a.button:hover {
+                background-color: #6b90da;
+            }
         </style>
     </head>
     <body>
         <form action="change" method="post" >
             <h2>Change Password</h2>
-            <label for="username">Enter Your Username:</label>
-            <input type="text" name="username">
-            <label for="password">New Password:</label>
+            <p class="error-message">${mess}</p>
+            <label for="username">Old Password:</label>
             <input type="password" name="password">
+            <input type="hidden" name="username" value="${sessionScope.account.username}">
+            <label for="password">New Password:</label>
+            <input type="password" name="newpassword">
             <label for="password">Confirm Password:</label>
-            <input type="password" name="rpassword">
+            <input type="password" name="rnewpassword">
             <input type="submit" value="Change">
+            <p>
+                <a href="home" class="button">Go back</a>
+            </p>
         </form>
-    <c:if test="${not empty mess}">
-        <p>${mess}</p>
-    </c:if>
-    <p><a href="login">Go back</a></p>
-</body>
+    </body>
 </html>

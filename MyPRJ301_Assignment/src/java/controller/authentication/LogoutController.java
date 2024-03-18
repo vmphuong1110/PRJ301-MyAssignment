@@ -4,8 +4,6 @@
  */
 package controller.authentication;
 
-import dal.AccountDBContext;
-import entity.Account;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -18,7 +16,7 @@ import jakarta.servlet.http.HttpSession;
  *
  * @author PHUONG
  */
-public class ChangeController extends HttpServlet {
+public class LogoutController extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -37,10 +35,10 @@ public class ChangeController extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet ChangeController</title>");
+            out.println("<title>Servlet LogoutController</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet ChangeController at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet LogoutController at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -58,8 +56,9 @@ public class ChangeController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        request.getRequestDispatcher("view/authentication/change.jsp").forward(request, response);
-
+        HttpSession session = request.getSession();
+        session.removeAttribute("account");
+        response.sendRedirect("home");
     }
 
     /**
@@ -73,28 +72,7 @@ public class ChangeController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String username = request.getParameter("username");
-        String password = request.getParameter("password");
-        String newpassword = request.getParameter("newpassword");
-
-        AccountDBContext db = new AccountDBContext();
-        Account account = db.getByUsernamePassword(username, password);
-        if (account == null) {
-            String mess = "Old password is not correct!";
-            request.setAttribute("mess", mess);
-            request.getRequestDispatcher("view/authentication/change.jsp").forward(request, response);
-        } else {
-            Account accounts = new Account(username, newpassword, account.getDisplayname());
-            
-            db.update(accounts);
-            HttpSession session = request.getSession();
-            session.setAttribute("accounts", accounts);
-
-            String successMess = "Updated successfully!";
-            request.setAttribute("mess", successMess);
-
-            request.getRequestDispatcher("view/authentication/change.jsp").forward(request, response);
-        }
+        processRequest(request, response);
     }
 
     /**

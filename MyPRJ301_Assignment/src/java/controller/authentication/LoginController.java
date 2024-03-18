@@ -72,29 +72,27 @@ public class LoginController extends HttpServlet {
     throws ServletException, IOException {
         String username = request.getParameter("username");
         String password = request.getParameter("password");
-
+        
         AccountDBContext db = new AccountDBContext();
         Account account = db.getByUsernamePassword(username, password);
-
+        
         if (account != null) {
             HttpSession session = request.getSession();
             session.setAttribute("account", account);
             
             Cookie c_user = new Cookie("username", username);
             Cookie c_pass = new Cookie("password", password);
-            c_user.setMaxAge(3600*24*7);
-            c_pass.setMaxAge(3600*24*7);
+            c_user.setMaxAge(3600 * 24 * 7);
+            c_pass.setMaxAge(3600 * 24 * 7);
             response.addCookie(c_pass);
             response.addCookie(c_user);
-            
-           // response.sendRedirect("http://www.dantri.com");
-            response.getWriter().println("Hello " + account.getDisplayname() + ", login sucessful!");
+            response.sendRedirect("home");
         } else {
-            response.getWriter().println("login failed");
+            String mess= "Login failed! Double check your enter!";
+            request.setAttribute("mess", mess.toUpperCase());
+            request.getRequestDispatcher("view/authentication/login.jsp").forward(request, response);
         }
-
     }
-
     /** 
      * Returns a short description of the servlet.
      * @return a String containing servlet description
