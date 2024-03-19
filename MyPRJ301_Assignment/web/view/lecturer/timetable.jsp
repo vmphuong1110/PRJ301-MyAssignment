@@ -31,7 +31,7 @@
                 width: 100px;
                 padding: 2px;
                 height: 23px;
-                background-color: #6b90da;
+                background-color: coral;
                 font-weight: normal;
                 text-transform: uppercase;
             }
@@ -132,8 +132,10 @@
 
                     <c:forEach items="${requestScope.dates}" var="d">
                         <td>
+                            <c:set var="lessonFound" value="false"/>
                             <c:forEach items="${requestScope.lessions}" var="les">
                                 <c:if test="${les.date eq d and les.slot.id eq slot.id}">
+                                    <c:set var="lessonFound" value="true"/>
                                     ${les.group.name} at ${les.room.name}
                                     <a href="att?id=${les.id}">
                                         <c:if test="${les.isAttended}">
@@ -154,6 +156,9 @@
                                     </c:choose>
                                 </c:if>
                             </c:forEach>
+                            <c:if test="${not lessonFound}">
+                                -
+                            </c:if>
                         </td>
                     </c:forEach>
                 </tr>

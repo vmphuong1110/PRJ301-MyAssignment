@@ -11,42 +11,45 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>JSP Page</title>
         <style>
-            body{
-                display:flex;
+            body {
+                display: flex;
                 justify-content: center;
-                align-items: center; 
-                height: 100vh; 
+                align-items: center;
+                height: 100vh;
                 margin: 0;
-                }
-                table {
+            }
+
+            table {
                 width: 100%;
                 border-collapse: collapse;
-                }
+            }
 
-                th, td {
+            th, td {
                 border: 1px solid #ccc;
-                width: 200px;
+                width: 190px;
                 padding: 8px;
                 text-align: left;
-                }
+            }
 
-                th {
+            th {
                 border-right: 1px solid #fff;
                 width: 100px;
                 padding: 2px;
                 height: 23px;
-                background-color: #6b90da;
+                background-color: coral;
                 font-weight: normal;
                 text-transform: uppercase;
-                }
+            }
 
-                .text-color1 {
+            .text-color1 {
                 color: #FF3300;
-                }
-                .text-color2 {
+            }
+
+            .text-color2 {
                 color: #008000;
-                }
-                .save-button {
+            }
+
+            .save-button {
                 padding: 10px 20px;
                 background-color: #4CAF50;
                 color: white;
@@ -58,31 +61,34 @@
                 text-transform: uppercase;
                 transition: background-color 0.3s ease;
                 margin-top: 30px;
-                }
+            }
 
-                .save-button:hover {
+            .save-button:hover {
                 background-color: #45a049;
-                }
+            }
 
-                input[type="text"] {
+            input[type="text"] {
                 padding: 5px;
                 width: 95%;
-                }
-            </style>
-        </head>
-        <body>
+            }
+        </style>
+    </head>
+    <body>
+        <div>
             <form action="att" method="POST">
                 <input type="hidden" name="id" value="${param.id}" />
                 <table border="1px">
-                    <tr>
-                        <th>No</th>
-                        <th>Code</th>
-                        <th>Image</th>
-                        <th>Students Name</th>
-                        <th>Status</th>
-                        <th>Comment</th>
-                        <th>Record Time</th>
-                    </tr>
+                  
+                        <tr>
+                            <th>No</th>
+                            <th>Code</th>
+                            <th>Image</th>
+                            <th>Students Name</th>
+                            <th>Status</th>
+                            <th>Comment</th>
+                            <th>Record Time</th>
+                        </tr>
+                  
                     <c:forEach items="${requestScope.atts}" var="a">
                         <tr>
                             <td>${a.student.id}</td>
@@ -113,5 +119,6 @@
                 </table>
                 <input type="submit" value="Save" class="save-button"/>
             </form>
-        </body>
-    </html>
+        </div>
+    </body>
+</html>
