@@ -13,11 +13,13 @@ import java.util.Date;
  * @author PHUONG
  */
 public class DateTimeHelper {
-     public static Date getWeekStart(Date date) {
+
+    public static Date getWeekStart(Date date) {
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(date);
-        int dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK) - calendar.getFirstDayOfWeek();
-        calendar.add(Calendar.DAY_OF_MONTH, -dayOfWeek);
+        int dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK);
+        int daysToSubtract = (dayOfWeek + 5) % 7; // Adjust to make Monday as the start of the week
+        calendar.add(Calendar.DAY_OF_MONTH, -daysToSubtract);
         return calendar.getTime();
     }
 

@@ -54,8 +54,8 @@ public class TimeTableController extends BaseRBACController {
         
         if(raw_to ==null)
         {
-            to =DateTimeHelper.convertUtilDateToSqlDate(
-                    DateTimeHelper.addDaysToDate(DateTimeHelper.getWeekStart(today),6));
+             to = DateTimeHelper.convertUtilDateToSqlDate(
+                    DateTimeHelper.addDaysToDate(DateTimeHelper.getWeekStart(today), 6)); 
         }
         else
         {
